@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  image-repo:
+    image: "image-repo-app"
+    container_name: "image-repo"
+    build:
+      context: .
+      dockerfile: app.dev.Dockerfile
+    volumes:
+      - /app/node_modules
+      - .:/app
+    ports:
+      - "3000:3000"
+    links:
+      - mongo
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes: 
+      - ~/mongodb-data:/data/db
