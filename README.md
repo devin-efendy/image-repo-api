@@ -1,15 +1,24 @@
 # image-repo-shopify-f2021
 
-```
-/Users/[your-username]/mongodb/bin/mongod --dbpath=/Users/[your-username]/mongodb-data
+## Running the application locally
 
-e.g.,
-/Users/devinefendy/mongodb/bin/mongod --dbpath=/Users/devinefendy/mongodb-data
+Pre-requisite: you need to have Node and Docker installed on your machine
+
+Run `npm install` 
+
+To start the application
+```
+docker-compose up -d
+```
+> `-d`: is for running the container in detached mode
+
+To stop all containers:
+```
+docker-compose stop
 ```
 
-### Docker Commands
+To remove all containers:
 ```
-docker build -t image-repo-app .
-
-docker run -d -p 3000:3000 image-repo-app
+docker-compose down -v
 ```
+> `-v`: delete all named volumes
