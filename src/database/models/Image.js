@@ -6,9 +6,13 @@ const ImageSchema = new Schema({
     type: String,
     required: true,
   },
-  date: {
+  imageUrl: {
+    type: String,
+    required: true,
+  },
+  uploadDate: {
     type: Date,
-    default: Date.now,
+    required: true,
   },
 });
 

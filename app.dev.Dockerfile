@@ -15,4 +15,4 @@ EXPOSE 3000
 
 # ENTRYPOINT ["node"]
 
-CMD ["nodemon", "src/app.js"]
+CMD ["nodemon", "App.js"]
