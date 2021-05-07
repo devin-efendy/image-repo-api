@@ -6,7 +6,7 @@ services:
     container_name: "image-repo"
     build:
       context: .
-      dockerfile: app.dev.Dockerfile
+      dockerfile: Dockerfile.dev
     volumes:
       - /app/node_modules
       - .:/app
@@ -14,10 +14,15 @@ services:
       - "3000:3000"
     links:
       - mongo
+
   mongo:
     image: mongo
-    container_name: mongo
+    container_name: image-repo-db
     ports:
       - "27017:27017"
-    volumes: 
-      - ~/mongodb-data:/data/db
+    volumes:
+      - image-repo-data:/data/db
+
+volumes:
+  image-repo-data:
+    name: image-repo-data

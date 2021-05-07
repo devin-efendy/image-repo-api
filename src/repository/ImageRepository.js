@@ -1,7 +1,7 @@
 "use strict";
 
 const Image = require("../database/models/Image");
-const RepositoryCodes = require("./RepositoryCodes");
+const RepoResponseCodes = require("./RepoResponseCodes");
 
 const addImage = async ({ name, imageUrl, uploadDate }) => {
   const newImage = new Image({
@@ -14,7 +14,7 @@ const addImage = async ({ name, imageUrl, uploadDate }) => {
     await newImage.save();
 
     return {
-      code: RepositoryCodes.SUCCESS,
+      code: RepoResponseCodes.SUCCESS,
       message: "",
       content: {
         name,
@@ -24,8 +24,8 @@ const addImage = async ({ name, imageUrl, uploadDate }) => {
     };
   } catch (exception) {
     return {
-      code: RepositoryCodes.FAILED,
-      message: error,
+      code: RepoResponseCodes.FAILED,
+      error: exception,
     };
   }
 };
