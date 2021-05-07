@@ -1,6 +1,5 @@
 "use strict";
 
-require("dotenv").config();
 const appUrl = process.env.APP_URL;
 const port = process.env.PORT || 3000;
 

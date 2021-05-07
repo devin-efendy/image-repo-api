@@ -45,6 +45,5 @@ app.get("/search", GetImage);
 // POST Image
 app.post("/add", upload, PostImage);
 
-
 // Wildcard handler
 app.get("*", PageNotFoundHandler);
