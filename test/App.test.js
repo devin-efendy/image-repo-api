@@ -13,6 +13,7 @@ const ImageData = require("./src/database/Image.seed");
 const { setupTest } = require("./TestSetup");
 
 const imageUploadPath = `${__dirname}/uploads/`;
+console.log(imageUploadPath)
 
 setupTest("image-repo-test-db");
 
