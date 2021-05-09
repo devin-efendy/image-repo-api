@@ -1,11 +1,8 @@
-"use strict";
-
 const Image = require("../database/models/Image");
 const RepoResponseCodes = require("./RepoResponseCodes");
 
-const addImage = async ({ name, imageUrl, uploadDate }) => {
+const addImage = async ({ imageUrl, uploadDate }) => {
   const newImage = new Image({
-    name,
     imageUrl,
     uploadDate,
   });
@@ -17,7 +14,7 @@ const addImage = async ({ name, imageUrl, uploadDate }) => {
       code: RepoResponseCodes.SUCCESS,
       message: "",
       content: {
-        name,
+        id: newImage.id,
         imageUrl,
         uploadDate,
       },
