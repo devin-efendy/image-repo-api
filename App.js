@@ -1,9 +1,6 @@
 "use strict";
 
-require("dotenv").config();
 const path = require("path");
-
-const port = process.env.PORT || 3000;
 
 // Express
 const express = require("express");
@@ -15,7 +12,6 @@ const upload = configMulter("image");
 
 // App Controller
 const {
-  SetUp,
   GetImage,
   PostImage,
   RootHandler,
@@ -34,7 +30,7 @@ app.use(express.urlencoded({ extended: true }));
  */
 app.use(express.static(path.join(__dirname, "/public")));
 
-app.listen(port, SetUp);
+// app.listen(port, SetUp);
 
 // Home page
 app.get("/", RootHandler);
@@ -45,6 +41,7 @@ app.get("/search", GetImage);
 // POST Image
 app.post("/add", upload, PostImage);
 
-
 // Wildcard handler
 app.get("*", PageNotFoundHandler);
+
+module.exports = app;

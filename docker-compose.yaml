@@ -23,6 +23,16 @@ services:
     volumes:
       - image-repo-data:/data/db
 
+  test-mongo:
+    image: mongo
+    container_name: image-repo-test-db
+    ports:
+      - "27018:27017"
+    volumes:
+      - image-repo-test-data:/data/db
+
 volumes:
   image-repo-data:
     name: image-repo-data
+  image-repo-test-data:
+    name: image-repo-test-data

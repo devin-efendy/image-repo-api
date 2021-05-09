@@ -1,6 +1,5 @@
 "use strict";
 
-require("dotenv").config();
 const appUrl = process.env.APP_URL;
 const port = process.env.PORT || 3000;
 
@@ -15,6 +14,7 @@ const HttpCodes = require("./HttpCodes");
 
 const SetUp = () => {
   console.log(`Server is up on port ${appUrl}:${port}`);
+  console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
   Database.connectDB(); // connect to MongoDB
 };
 
@@ -37,7 +37,6 @@ const GetImage = async (req, res) => {
 };
 
 const PostImage = async (req, res) => {
-  const imageName = req.body.name;
   const fileName = req.body.fileName;
   const uploadDate = req.body.uploadDate;
 
@@ -47,19 +46,13 @@ const PostImage = async (req, res) => {
       .json({ error: req.fileValidationError });
   }
 
-  if (!imageName || !fileName) {
-    var errorMessage = [];
-
-    if (!imageName)
-      errorMessage.push("'name' should be included in the request");
-    if (!fileName)
-      errorMessage.push("'image' should be included in the request");
-
-    return res.status(HttpCodes.BAD_REQUEST).json({ error: errorMessage });
+  if (!fileName) {
+    return res
+      .status(HttpCodes.BAD_REQUEST)
+      .json({ error: "'image' should be included in the request" });
   }
 
   const imageDto = {
-    name: imageName,
     imageUrl: `${appUrl}:${port}/uploads/${fileName}`,
     uploadDate,
   };
@@ -81,7 +74,7 @@ const PostImage = async (req, res) => {
 };
 
 const RootHandler = (req, res) => {
-  return res.status(HttpCodes.OK).send("Image Repository API @devin-efendy");
+  return res.status(HttpCodes.OK).send("Image Repository API");
 };
 
 const PageNotFoundHandler = (req, res) => {
