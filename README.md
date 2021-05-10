@@ -2,6 +2,14 @@
 
 The purpose of this application to store images inside a _repository_. User can also search all images that are uploaded.
 
+**Postman** is recommended to test the application. There is a Postman requests collection and test images inside `/Postman`.
+
+## Endpoint
+
+`/search` - return all images inside the repository
+
+`/add` - upload an image into the repository
+
 
 ## Running the application locally
 
