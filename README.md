@@ -13,8 +13,6 @@ The purpose of this application to store images inside a _repository_. User can 
 
 ## Running the application locally
 
----
-
 ### **Pre-requisite: you need to have Node and Docker installed on your machine**
 
 Once you have Node instaleed run `npm install`
@@ -52,8 +50,6 @@ docker-compose down -v
 
 ## Running the test
 
----
-
 You need to have the containers running (You don't need this command if you already have all the containers running)
 
 ```
@@ -69,8 +65,6 @@ npm test
 ```
 
 ## Others
-
----
 
 To remove all uploaded images run:
 
