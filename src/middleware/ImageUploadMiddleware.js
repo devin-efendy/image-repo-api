@@ -4,44 +4,15 @@ const multer = require("multer");
 const FILE_SIZE_LIMIT = 1000000;
 
 // Init Upload
-
 const configMulter = (paramName) => {
-  const storage = multer.diskStorage({
-    /**
-     * All images are stored in a project folder. This is not ideal.
-     * The ideal solution would be using a proper Object Storage service
-     * such as MinIO or AWS S3
-     *
-     * This is for the purpose of demo only
-     */
-    destination: `${process.env.FILE_UPLOADS_PATH}`,
-    filename: (req, file, callback) => {
-      if (file == null) {
-        return callback(new Error("Missing file"));
-      }
-
-      const parsedFile = path.parse(file.originalname);
-      const uploadDate = Date.now();
-
-      /**
-       * TODO: Implementing a more robust file naming
-       * e.g., what to do with file name that contains space?
-       */
-      const imageName = parsedFile.name.replace(/ /g, "_");
-
-      const fileName = `${imageName}_${uploadDate}${parsedFile.ext}`;
-
-      req.body.uploadDate = uploadDate;
-      req.body.fileName = fileName;
-
-      return callback(null, fileName);
-    },
-  });
+  // We want to store the image into a buffer before uploading it to S3
+  const multerMemoryStorage = multer.memoryStorage();
 
   const multerOptions = multer({
-    storage: storage,
+    storage: multerMemoryStorage,
     limits: { fileSize: FILE_SIZE_LIMIT },
     fileFilter: (req, file, cb) => {
+      // Credit @Traversy Media
       // Allowed ext
       const filetypes = /jpeg|jpg|png|gif/;
       // Check ext

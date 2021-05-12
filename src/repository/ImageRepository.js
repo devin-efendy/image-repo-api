@@ -1,22 +1,25 @@
 const Image = require("../database/models/Image");
 const RepoResponseCodes = require("./RepoResponseCodes");
 
-const addImage = async ({ imageUrl, uploadDate }) => {
+const addImage = async ({ imageKey, imageUrl, description, uploadDate }) => {
   const newImage = new Image({
+    imageKey,
     imageUrl,
+    description,
     uploadDate,
   });
 
   try {
-    await newImage.save();
+    const saveResult = await newImage.save();
 
     return {
       code: RepoResponseCodes.SUCCESS,
       message: "",
       content: {
-        id: newImage.id,
-        imageUrl,
-        uploadDate,
+        imageKey: saveResult.imageKey,
+        imageUrl: saveResult.imageUrl,
+        description: saveResult.description ? saveResult.description : "",
+        uploadDate: saveResult.uploadDate,
       },
     };
   } catch (exception) {

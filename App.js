@@ -21,17 +21,6 @@ const {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-/**
- * All images are ACCESSIBLE to public.
- * From the perspective of security this is not ideal/safe
- * e.g., Pictures that are private, confidential, etc...
- *
- * This is for the purpose of demo only
- */
-app.use(express.static(path.join(__dirname, "/public")));
-
-// app.listen(port, SetUp);
-
 // Home page
 app.get("/", RootHandler);
 
