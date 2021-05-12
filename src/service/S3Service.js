@@ -3,6 +3,7 @@ var AWS = require("aws-sdk");
 const path = require("path");
 
 const uploadImageToS3 = async (imageFile) => {
+  console.log('S3Service: uploadImageToS3');
   const parsedFile = path.parse(imageFile.originalname);
 
   /**

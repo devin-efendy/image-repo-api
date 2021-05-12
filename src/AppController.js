@@ -54,7 +54,7 @@ const PostImage = async (req, res) => {
 
   try {
     const uploadResult = await uploadImageToS3(imageFile);
-
+    
     const imageDto = {
       imageKey: uploadResult.Key,
       imageUrl: uploadResult.Location,
@@ -73,6 +73,7 @@ const PostImage = async (req, res) => {
         .json({ error: addImageResult.error.message });
     }
   } catch (error) {
+    // console.log(error)
     return res.status(error.statusCode).send(error);
   }
 };
