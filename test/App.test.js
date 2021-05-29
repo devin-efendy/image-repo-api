@@ -12,8 +12,18 @@ const Image = require("../src/database/models/Image");
 const ImageData = require("./src/database/Image.seed");
 const { setupTest } = require("./TestSetup");
 
-const imageUploadPath = `${__dirname}/uploads/`;
-console.log(imageUploadPath)
+// AWS S3 Service Mock
+jest.mock("../src/service/S3Service", () => {
+  const TestData = require("./src/database/Image.seed")[0];
+
+  return {
+    uploadImageToS3: jest.fn().mockReturnValue({
+      Key: TestData.imageKey,
+      Location: TestData.imageUrl,
+      uploadDate: TestData.uploadDate,
+    }),
+  };
+});
 
 setupTest("image-repo-test-db");
 
@@ -38,15 +48,13 @@ it("POST/add with valid file return 200 OK", async (done) => {
     .post("/add")
     .attach("image", filePath)
     .then((res) => {
-      const imageUrl = res.body.imageUrl;
-      const uploadDate = res.body.uploadDate;
-      const originalFileName = imageUrl.match(/\/([^\/]+)\/?$/)[1];
-      const fileName = path.parse(originalFileName).name;
-
-      expect(fs.existsSync(`${imageUploadPath}${originalFileName}`)).toBe(true);
       expect(res.status).toBe(200);
-      expect(fileName).toBe(`car_${uploadDate}`);
-
+      expect(res.body.imageKey).toBe(ImageData[0].imageKey);
+      expect(res.body.imageUrl).toBe(ImageData[0].imageUrl);
+      expect(res.body.description).toBe(ImageData[0].description);
+      expect(res.body.uploadDate).toBe(
+        new Date(ImageData[0].uploadDate).toISOString()
+      );
       done();
     })
     .catch((err) => {

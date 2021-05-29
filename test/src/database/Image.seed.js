@@ -1,14 +1,20 @@
 module.exports = [
   {
+    imageKey: "image-1.jpg",
     imageUrl: "http://url/image-1",
+    description: "",
     uploadDate: Date.now(),
   },
   {
+    imageKey: "image-2.jpg",
     imageUrl: "http://url/image-2",
+    description: "",
     uploadDate: Date.now(),
   },
   {
-    imageUrl: "http://url/image-3",
+    imageKey: "image-2.jpg",
+    imageUrl: "http://url/image-2",
+    description: "",
     uploadDate: Date.now(),
   },
 ];

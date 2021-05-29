@@ -11,6 +11,8 @@ const ImageRepository = require("./repository/ImageRepository");
 const RepoResponseCodes = require("./repository/RepoResponseCodes");
 // HTTP Code Enum
 const HttpCodes = require("./HttpCodes");
+// AWS S3 Service for image storage
+const { uploadImageToS3 } = require("./service/S3Service");
 
 const SetUp = () => {
   console.log(`Server is up on port ${appUrl}:${port}`);
@@ -29,16 +31,14 @@ const GetImage = async (req, res) => {
       uploadDate: result.uploadDate,
     }));
 
-    res.status(HttpCodes.OK).json(getResponse);
+    return res.status(HttpCodes.OK).json(getResponse);
   } catch (e) {
-    // console.error(e);
     return res.status(HttpCodes.INTERNAL_SERVER_ERROR).json({ error: e });
   }
 };
 
 const PostImage = async (req, res) => {
-  const fileName = req.body.fileName;
-  const uploadDate = req.body.uploadDate;
+  const imageFile = req.file;
 
   if (req.fileValidationError) {
     return res
@@ -46,18 +46,22 @@ const PostImage = async (req, res) => {
       .json({ error: req.fileValidationError });
   }
 
-  if (!fileName) {
+  if (!imageFile) {
     return res
       .status(HttpCodes.BAD_REQUEST)
       .json({ error: "'image' should be included in the request" });
   }
 
-  const imageDto = {
-    imageUrl: `${appUrl}:${port}/uploads/${fileName}`,
-    uploadDate,
-  };
-
   try {
+    const uploadResult = await uploadImageToS3(imageFile);
+    
+    const imageDto = {
+      imageKey: uploadResult.Key,
+      imageUrl: uploadResult.Location,
+      description: req.body.description,
+      uploadDate: uploadResult.uploadDate,
+    };
+
     const addImageResult = await ImageRepository.addImage(imageDto);
 
     if (addImageResult.code == RepoResponseCodes.SUCCESS) {
@@ -69,7 +73,8 @@ const PostImage = async (req, res) => {
         .json({ error: addImageResult.error.message });
     }
   } catch (error) {
-    return res.status(HttpCodes.INTERNAL_SERVER_ERROR).json({ error: error });
+    // console.log(error)
+    return res.status(error.statusCode).send(error);
   }
 };
 
