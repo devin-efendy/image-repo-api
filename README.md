@@ -63,13 +63,3 @@ Then, to run the test
 ```
 npm test
 ```
-
-## Others
-
-To remove all uploaded images run:
-
-```
-npm run rmuploads
-```
-
-This command will delete all the files inside `public/uploads`
