@@ -1,4 +1,4 @@
-# image-repo-shopify-f2021
+# image-repo-api
 
 The purpose of this application to store images inside a _repository_. User can also search all images that are uploaded.
 
